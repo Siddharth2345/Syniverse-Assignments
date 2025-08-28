@@ -1,0 +1,399 @@
+1) Task: Create a Library class with an inner Book class to demonstrate inner class concepts.
+
+class Library {
+    private String name;
+
+    public Library(String name) {
+        this.name = name;
+        System.out.println("Library: " + name);
+    }
+
+    class Book {
+        private String title;
+
+        public Book(String title) {
+            this.title = title;
+            System.out.println("Book added: " + title);
+        }
+
+        public void showDetails() {
+            System.out.println(title + " at " + name);
+        }
+    }
+
+    public void addBook(String title) {
+        Book b = new Book(title);
+        b.showDetails();
+    }
+}
+
+public class Main1 {
+    public static void main(String[] args) {
+        Library lib = new Library("City Library");
+
+        Library.Book b1 = lib.new Book("Java Guide");
+        b1.showDetails();
+
+        lib.addBook("Python Guide");
+    }
+}
+
+2) Task: Create a Day enum to demonstrate enum features with methods and values.
+
+enum Day {
+    MONDAY(1), TUESDAY(2), WEDNESDAY(3), THURSDAY(4), FRIDAY(5);
+
+    private int dayNumber;
+
+    Day(int num) {
+        this.dayNumber = num;
+    }
+
+    public int getDayNumber() {
+        return dayNumber;
+    }
+
+    public boolean isWeekend() {
+        return false; // Always false in this case
+    }
+}
+
+public class Main2 {
+    public static void main(String[] args) {
+        Day today = Day.WEDNESDAY;
+
+        switch (today) {
+            case WEDNESDAY:
+                System.out.println("Today is: WEDNESDAY");
+                break;
+            default:
+                System.out.println("Other Day");
+        }
+
+        for (Day d : Day.values()) {
+            System.out.println("Day: " + d + ", Number: " + d.getDayNumber());
+        }
+    }
+}
+
+3) Task: Create a weather station system using the Observer pattern to notify different display devices.
+
+import java.util.*;
+
+interface Observer {
+    void update(int temp);
+}
+
+class PhoneDisplay implements Observer {
+    public void update(int temp) {
+        System.out.println("Phone shows: " + temp + "°C");
+    }
+}
+
+class TVDisplay implements Observer {
+    public void update(int temp) {
+        System.out.println("TV shows: " + temp + "°C");
+    }
+}
+
+class WeatherStation {
+    private List<Observer> observers = new ArrayList<>();
+    private int temperature;
+
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void setTemperature(int temp) {
+        this.temperature = temp;
+        System.out.println("Temperature changed to " + temp);
+        notifyObservers();
+    }
+
+    private void notifyObservers() {
+        for (Observer o : observers) {
+            o.update(temperature);
+        }
+    }
+}
+
+public class Main3 {
+    public static void main(String[] args) {
+        WeatherStation ws = new WeatherStation();
+
+        ws.addObserver(new PhoneDisplay());
+        ws.addObserver(new TVDisplay());
+
+        ws.setTemperature(25);
+        ws.setTemperature(30);
+    }
+}
+
+4) Task: Create a Car class using the Builder pattern to construct cars with different specifications.
+
+class Car {
+    private String brand;
+    private String model;
+    private int year;
+
+    private Car(Builder builder) {
+        this.brand = builder.brand;
+        this.model = builder.model;
+        this.year = builder.year;
+    }
+
+    public String getBrand() { return brand; }
+    public String getModel() { return model; }
+    public int getYear() { return year; }
+
+    @Override
+    public String toString() {
+        return "Car{brand='" + brand + "', model='" + model + "', year=" + year + "}";
+    }
+
+    public static class Builder {
+        private String brand;
+        private String model;
+        private int year;
+
+        public Builder setBrand(String brand) {
+            this.brand = brand;
+            return this;
+        }
+
+        public Builder setModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        public Builder setYear(int year) {
+            this.year = year;
+            return this;
+        }
+
+        public Car build() {
+            if (brand == null || brand.isEmpty()) {
+                throw new IllegalArgumentException("Brand cannot be null or empty");
+            }
+            if (year <= 1900) {
+                throw new IllegalArgumentException("Year must be > 1900");
+            }
+            return new Car(this);
+        }
+    }
+}
+
+public class Main4 {
+    public static void main(String[] args) {
+        try {
+            Car car1 = new Car.Builder()
+                    .setBrand("Toyota")
+                    .setModel("Camry")
+                    .setYear(2023)
+                    .build();
+            System.out.println(car1);
+
+            Car car2 = new Car.Builder()
+                    .setModel("Unknown")
+                    .setYear(1800)
+                    .build();
+            System.out.println(car2);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+
+5) Task: Create a DatabaseConnection class using the Singleton pattern to ensure only one database connection exists.
+
+class DatabaseConnection {
+    private static DatabaseConnection instance;
+
+    private DatabaseConnection() {
+        System.out.println("Database connected");
+    }
+
+    public static synchronized DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
+
+    public void executeQuery(String query) {
+        System.out.println("Executing: " + query);
+    }
+}
+
+public class Main5 {
+    public static void main(String[] args) {
+        DatabaseConnection conn1 = DatabaseConnection.getInstance();
+        DatabaseConnection conn2 = DatabaseConnection.getInstance();
+
+
+
+        System.out.println("Same instance: " + (conn1 == conn2));
+
+        conn1.executeQuery("SELECT * FROM users");
+    }
+}
+
+6) Zoo Management System – Abstraction, Interfaces, Polymorphism
+
+abstract class Animal {
+    protected String name;
+    protected int age;
+    private static int counter = 0;
+
+    public Animal(String name, int age) {
+        this.name = name;
+        this.age = age;
+        counter++;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+
+    public abstract void makeSound();
+    public abstract void move();
+}
+
+interface Flyable {
+    void fly();
+}
+
+interface Swimmable {
+    void swim();
+}
+
+class Bird extends Animal implements Flyable {
+    public Bird(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " chirps.");
+    }
+
+    @Override
+    public void move() {
+        fly();
+    }
+
+    @Override
+    public void fly() {
+        System.out.println(name + " is flying.");
+    }
+}
+
+class Fish extends Animal implements Swimmable {
+    public Fish(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " blubs.");
+    }
+
+    @Override
+    public void move() {
+        swim();
+    }
+
+    @Override
+    public void swim() {
+        System.out.println(name + " is swimming.");
+    }
+}
+
+class Duck extends Animal implements Flyable, Swimmable {
+    public Duck(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " quacks.");
+    }
+
+    @Override
+    public void move() {
+        System.out.println(name + " can both swim and fly.");
+    }
+
+    @Override
+    public void fly() {
+        System.out.println(name + " is flying.");
+    }
+
+    @Override
+    public void swim() {
+        System.out.println(name + " is swimming.");
+    }
+}
+
+class Cat extends Animal {
+    public Cat(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " meows.");
+    }
+
+    @Override
+    public void move() {
+        System.out.println(name + " is walking.");
+    }
+}
+
+class ZooKeeper {
+    public void feedAllAnimals(Animal[] animals) {
+        for (Animal animal : animals) {
+            animal.eat();
+        }
+    }
+
+    public void makeAnimalSound(Animal animal) {
+        animal.makeSound();
+    }
+}
+
+public class ZooManagementSystem {
+    public static void main(String[] args) {
+        Animal[] animals = {
+            new Bird("Parrot", 2),
+            new Fish("Goldfish", 1),
+            new Duck("Donald", 3),
+            new Cat("Whiskers", 4)
+        };
+
+        ZooKeeper keeper = new ZooKeeper();
+
+        System.out.println("Feeding all animals:");
+        keeper.feedAllAnimals(animals);
+
+        System.out.println("\nMaking each animal sound and move:");
+        for (Animal animal : animals) {
+            keeper.makeAnimalSound(animal);
+            animal.move();
+            if (animal instanceof Flyable) {
+                ((Flyable) animal).fly();
+            }
+            if (animal instanceof Swimmable) {
+                ((Swimmable) animal).swim();
+            }
+            System.out.println();
+        }
+
+        System.out.println("Total animals: " + Animal.getCounter());
+    }
+}
