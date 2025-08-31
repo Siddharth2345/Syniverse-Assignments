@@ -1,1 +1,74 @@
+import java.util.ArrayList;
 
+import java.util.HashSet;
+
+public class TaskTracker {
+
+    private ArrayList<String> tasks = new ArrayList<>();
+
+    private HashSet<String> completed = new HashSet<>();
+
+    void addTask(String task) {
+
+        tasks.add(task);
+
+        System.out.println("Added: " + task + " | Time Complexity: O(1) amortized");
+
+    }
+
+    void markCompleted(String task) {
+
+        if (tasks.contains(task)) {
+
+            completed.add(task);
+
+            System.out.println("Marked Completed: " + task + " | Time Complexity: O(n) search");
+
+        }
+
+    }
+
+    void removeTask(String task) {
+
+        if (tasks.remove(task)) {
+
+            completed.remove(task);
+
+            System.out.println("Removed: " + task + " | Time Complexity: O(n)");
+
+        }
+
+    }
+
+    void displayTasks() {
+
+        System.out.println("Tasks:");
+
+        for (String task : tasks) {
+
+            System.out.println(task + (completed.contains(task) ? " (Completed)" : ""));
+
+        }
+
+        System.out.println("Display Tasks | Time Complexity: O(n)");
+
+    }
+
+    public static void main(String[] args) {
+
+        TaskTracker tracker = new TaskTracker();
+
+        tracker.addTask("Task1");
+
+        tracker.addTask("Task2");
+
+        tracker.markCompleted("Task1");
+
+        tracker.displayTasks();
+
+        tracker.removeTask("Task2");
+
+    }
+
+}
+ 
