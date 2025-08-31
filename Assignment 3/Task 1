@@ -1,1 +1,108 @@
+class Pen {
 
+    private int inkLevel;
+
+    private String color;
+
+    private String type;
+
+    public Pen(int inkLevel, String color, String type) {
+
+        this.inkLevel = inkLevel;
+
+        this.color = color;
+
+        this.type = type;
+
+    }
+
+    public void setInkLevel(int inkLevel) {
+
+        this.inkLevel = inkLevel;
+
+    }
+
+    public void setColor(String color) {
+
+        this.color = color;
+
+    }
+
+    public void setType(String type) {
+
+        this.type = type;
+
+    }
+
+    public String toString() {
+
+        return "Pen{inkLevel=" + inkLevel + ", color='" + color + "', type='" + type + "'}";
+
+    }
+
+}
+
+public class PassByValueReference {
+
+    static void modifyInt(int x) {
+
+        x = 100;
+
+    }
+
+    static void toggleBoolean(boolean flag) {
+
+        flag = !flag;
+
+    }
+
+    static void modifyPen(Pen p) {
+
+        p.setInkLevel(50);
+
+        p.setColor("Blue");
+
+        p.setType("Gel");
+
+    }
+
+    static void modifyPenArray(Pen[] pens) {
+
+        pens[0].setColor("Green");
+
+        pens[0] = new Pen(100, "Red", "Ballpoint");
+
+    }
+
+    public static void main(String[] args) {
+
+        int a = 10;
+
+        boolean flag = true;
+
+        modifyInt(a);
+
+        toggleBoolean(flag);
+
+        System.out.println("After modification: a = " + a + ", flag = " + flag);
+
+        Pen pen1 = new Pen(80, "Black", "Fountain");
+
+        modifyPen(pen1);
+
+        System.out.println("Modified Pen: " + pen1);
+
+        Pen[] pens = { new Pen(20, "Blue", "Gel"), new Pen(30, "Black", "Ballpoint") };
+
+        modifyPenArray(pens);
+
+        for (Pen p : pens) {
+
+            System.out.println(p);
+
+        }
+
+    }
+
+}
+ 
