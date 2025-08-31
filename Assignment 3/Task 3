@@ -1,1 +1,64 @@
+public class StringTests {
 
+    public static void main(String[] args) {
+
+        String s1 = "hello";
+
+        String s2 = s1;
+
+        s1 = s1 + " world";
+
+        System.out.println("s1: " + s1);
+
+        System.out.println("s2: " + s2);
+
+        System.out.println("Same object? " + (s1 == s2)); 
+
+        String a = "java";
+
+        String b = "java";
+
+        String c = new String("java");
+
+        String d = new String("java");
+
+        System.out.println("a==b: " + (a == b)); 
+
+        System.out.println("c==d: " + (c == d));
+
+        System.out.println("a==c: " + (a == c)); 
+
+        System.out.println("a.equals(c): " + a.equals(c));
+
+        long start1 = System.nanoTime();
+
+        String str = "";
+
+        for (int i = 0; i < 1000; i++) {
+
+            str += "a";
+
+        }
+
+        long end1 = System.nanoTime();
+
+        System.out.println("Time with String: " + (end1 - start1) + " ns");
+
+        long start2 = System.nanoTime();
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 1000; i++) {
+
+            sb.append("a");
+
+        }
+
+        long end2 = System.nanoTime();
+
+        System.out.println("Time with StringBuilder: " + (end2 - start2) + " ns");
+
+    }
+
+}
+ 
