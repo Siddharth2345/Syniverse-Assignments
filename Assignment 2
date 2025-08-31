@@ -1,0 +1,276 @@
+import java.util.ArrayList;
+
+class Pen {
+
+    private final int penID;
+
+    private String color;
+
+    private String brand;
+
+    private int inkLevel; 
+
+    private static int penCounter = 0;
+
+    public static final int MAX_INK_LEVEL = 100; 
+
+    public Pen() {
+
+        this("Black", "Generic", 100);
+
+    }
+
+    public Pen(String color, String brand, int inkLevel) {
+
+        penCounter++;
+
+        this.penID = penCounter;
+
+        this.color = color;
+
+        this.brand = brand;
+
+        setInkLevel(inkLevel); 
+
+    }
+
+    public int getPenID() {
+
+        return penID;
+
+    }
+
+    public String getColor() {
+
+        return color;
+
+    }
+
+    public void setColor(String color) {
+
+        if (color != null && !color.trim().isEmpty()) {
+
+            this.color = color;
+
+        }
+
+    }
+
+    public String getBrand() {
+
+        return brand;
+
+    }
+
+    public void setBrand(String brand) {
+
+        if (brand != null && !brand.trim().isEmpty()) {
+
+            this.brand = brand;
+
+        }
+
+    }
+
+    public int getInkLevel() {
+
+        return inkLevel;
+
+    }
+
+    public void setInkLevel(int inkLevel) {
+
+        if (inkLevel >= 0 && inkLevel <= MAX_INK_LEVEL) {
+
+            this.inkLevel = inkLevel;
+
+        }
+
+    }
+
+    public void write(int usage) {
+
+        if (inkLevel > 0) {
+
+            inkLevel -= usage;
+
+            if (inkLevel < 0) inkLevel = 0;
+
+            System.out.println("Writing... ink now: " + inkLevel + "%");
+
+        } else {
+
+            System.out.println("Ink finished! Please refill.");
+
+        }
+
+    }
+
+    public void refillInk(int amount) {
+
+        inkLevel += amount;
+
+        if (inkLevel > MAX_INK_LEVEL) {
+
+            inkLevel = MAX_INK_LEVEL;
+
+        }
+
+        System.out.println("Pen refilled. Ink level: " + inkLevel + "%");
+
+    }
+
+    public final String getPenDetails() {
+
+        return "PenID: " + penID + ", Color: " + color + ", Brand: " + brand + ", InkLevel: " + inkLevel + "%";
+
+    }
+
+    public static int getTotalPens() {
+
+        return penCounter;
+
+    }
+
+}
+
+class GelPen extends Pen {
+
+    private boolean smoothWriting;
+
+    public GelPen(String color, String brand, int inkLevel, boolean smoothWriting) {
+
+        super(color, brand, inkLevel);
+
+        this.smoothWriting = smoothWriting;
+
+    }
+
+    public boolean isSmoothWriting() {
+
+        return smoothWriting;
+
+    }
+
+    public void setSmoothWriting(boolean smoothWriting) {
+
+        this.smoothWriting = smoothWriting;
+
+    }
+
+    public void quickDry() {
+
+        System.out.println("This GelPen has quick-dry ink feature!");
+
+    }
+
+}
+
+class PenBox {
+
+    private ArrayList<Pen> pens = new ArrayList<>();
+
+    public void addPen(Pen pen) {
+
+        pens.add(pen);
+
+        System.out.println("Pen added to box.");
+
+    }
+
+    public void removePen(int index) {
+
+        if (index >= 0 && index < pens.size()) {
+
+            pens.remove(index);
+
+            System.out.println("Pen removed from box.");
+
+        } else {
+
+            System.out.println("Invalid index!");
+
+        }
+
+    }
+
+    public void listAllPens() {
+
+        if (pens.isEmpty()) {
+
+            System.out.println("No pens in the box.");
+
+        } else {
+
+            for (Pen p : pens) {
+
+                System.out.println(p.getPenDetails());
+
+            }
+
+        }
+
+    }
+
+    public Pen findPenByColor(String color) {
+
+        for (Pen p : pens) {
+
+            if (p.getColor().equalsIgnoreCase(color)) {
+
+                return p;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+}
+
+public class OOPAssignment {
+
+    public static void main(String[] args) {
+
+        Pen p1 = new Pen("Blue", "Reynolds", 80);
+
+        Pen p2 = new Pen("Red", "Cello", 50);
+
+        GelPen gp1 = new GelPen("Black", "Parker", 100, true);
+
+        p1.write(30);
+
+        p2.refillInk(40);
+
+        System.out.println(p1.getPenDetails());
+
+        System.out.println(gp1.getPenDetails());
+
+        PenBox box = new PenBox();
+
+        box.addPen(p1);
+
+        box.addPen(p2);
+
+        box.addPen(gp1);
+
+        box.listAllPens();
+
+        Pen foundPen = box.findPenByColor("Red");
+
+        if (foundPen != null) {
+
+            System.out.println("Found pen: " + foundPen.getPenDetails());
+
+        }
+
+        box.removePen(1);
+
+        System.out.println("Total pens created: " + Pen.getTotalPens());
+
+    }
+
+}
+ 
