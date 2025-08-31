@@ -1,1 +1,58 @@
+import java.util.*;
 
+public class Gradebook {
+
+    private Map<String, List<Integer>> gradebook = new HashMap<>();
+
+    void addStudent(String name) {
+
+        gradebook.putIfAbsent(name, new ArrayList<>());
+
+        System.out.println("Added Student: " + name + " | Time Complexity: O(1)");
+
+    }
+
+    void addGrade(String name, int grade) {
+
+        gradebook.get(name).add(grade);
+
+        System.out.println("Added Grade " + grade + " for " + name + " | Time Complexity: O(1)");
+
+    }
+
+    void calculateAverage(String name) {
+
+        List<Integer> grades = gradebook.get(name);
+
+        double avg = grades.stream().mapToInt(x -> x).average().orElse(0);
+
+        System.out.println("Average for " + name + ": " + avg + " | Time Complexity: O(n)");
+
+    }
+
+    void displayStudents() {
+
+        System.out.println("Gradebook: " + gradebook);
+
+        System.out.println("Display | Time Complexity: O(n)");
+
+    }
+
+    public static void main(String[] args) {
+
+        Gradebook gb = new Gradebook();
+
+        gb.addStudent("John");
+
+        gb.addGrade("John", 90);
+
+        gb.addGrade("John", 80);
+
+        gb.calculateAverage("John");
+
+        gb.displayStudents();
+
+    }
+
+}
+ 
