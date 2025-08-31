@@ -1,1 +1,61 @@
+import java.util.Stack;
 
+public class BrowserHistory {
+
+    private Stack<String> backStack = new Stack<>();
+
+    private Stack<String> forwardStack = new Stack<>();
+
+    void visit(String page) {
+
+        backStack.push(page);
+
+        forwardStack.clear();
+
+        System.out.println("Visited: " + page + " | Time Complexity: O(1)");
+
+    }
+
+    void goBack() {
+
+        if (!backStack.isEmpty()) {
+
+            String page = backStack.pop();
+
+            forwardStack.push(page);
+
+            System.out.println("Went Back from: " + page + " | Time Complexity: O(1)");
+
+        }
+
+    }
+
+    void goForward() {
+
+        if (!forwardStack.isEmpty()) {
+
+            String page = forwardStack.pop();
+
+            backStack.push(page);
+
+            System.out.println("Went Forward to: " + page + " | Time Complexity: O(1)");
+
+        }
+
+    }
+
+    public static void main(String[] args) {
+
+        BrowserHistory bh = new BrowserHistory();
+
+        bh.visit("google.com");
+
+        bh.visit("github.com");
+
+        bh.goBack();
+
+        bh.goForward();
+
+    }
+
+}
