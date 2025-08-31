@@ -1,1 +1,92 @@
+import java.util.*;
 
+public class ComplexityDemo {
+
+    void constantTime(int n) {
+
+        System.out.println("Hello | Complexity O(1)");
+
+    }
+
+    void logarithmicTime(int n) {
+
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) list.add(i);
+
+        Collections.binarySearch(list, n/2);
+
+        System.out.println("Logarithmic O(log n)");
+
+    }
+
+    void linearTime(int n) {
+
+        for (int i = 0; i < n; i++);
+
+        System.out.println("Linear O(n)");
+
+    }
+
+    void linearithmicTime(int n) {
+
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) list.add(n - i);
+
+        Collections.sort(list);
+
+        System.out.println("Linearithmic O(n log n)");
+
+    }
+
+    void quadraticTime(int n) {
+
+        for (int i = 0; i < n; i++) {
+
+            for (int j = 0; j < n; j++);
+
+        }
+
+        System.out.println("Quadratic O(n^2)");
+
+    }
+
+    public static void main(String[] args) {
+
+        ComplexityDemo demo = new ComplexityDemo();
+
+        int[] inputs = {1, 5, 10, 15};
+
+        for (int n : inputs) {
+
+            long start, end;
+
+            start = System.nanoTime(); demo.constantTime(n); end = System.nanoTime();
+
+            System.out.println("Time taken: " + (end-start) + "ns");
+
+            start = System.nanoTime(); demo.logarithmicTime(n); end = System.nanoTime();
+
+            System.out.println("Time taken: " + (end-start) + "ns");
+
+            start = System.nanoTime(); demo.linearTime(n); end = System.nanoTime();
+
+            System.out.println("Time taken: " + (end-start) + "ns");
+
+            start = System.nanoTime(); demo.linearithmicTime(n); end = System.nanoTime();
+
+            System.out.println("Time taken: " + (end-start) + "ns");
+
+            start = System.nanoTime(); demo.quadraticTime(n); end = System.nanoTime();
+
+            System.out.println("Time taken: " + (end-start) + "ns");
+
+            System.out.println("----------------------");
+
+        }
+
+    }
+
+}
+ 
