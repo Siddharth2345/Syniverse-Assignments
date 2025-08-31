@@ -1,1 +1,78 @@
+import java.util.*;
+
+public class EmergencyRoom {
+
+    static class Patient {
+
+        String name;
+
+        int severity;
+
+        Patient(String name, int severity) {
+
+            this.name = name;
+
+            this.severity = severity;
+
+        }
+
+        public String toString() {
+
+            return name + " (Severity " + severity + ")";
+
+        }
+
+    }
+
+    private PriorityQueue<Patient> pq = new PriorityQueue<>(
+
+        (a, b) -> b.severity - a.severity
+
+    );
+
+    void addPatient(String name, int severity) {
+
+        pq.add(new Patient(name, severity));
+
+        System.out.println("Added Patient: " + name + " | Time Complexity: O(log n)");
+
+    }
+
+    void getNextPatient() {
+
+        Patient p = pq.poll();
+
+        System.out.println("Next to treat: " + p + " | Time Complexity: O(log n)");
+
+    }
+
+    void displayPatients() {
+
+        ArrayList<Patient> list = new ArrayList<>(pq);
+
+        list.sort((a, b) -> b.severity - a.severity);
+
+        System.out.println("Patients in priority order: " + list);
+
+        System.out.println("Display | Time Complexity: O(n log n)");
+
+    }
+
+    public static void main(String[] args) {
+
+        EmergencyRoom er = new EmergencyRoom();
+
+        er.addPatient("Alice", 5);
+
+        er.addPatient("Bob", 9);
+
+        er.addPatient("Charlie", 3);
+
+        er.displayPatients();
+
+        er.getNextPatient();
+
+    }
+
+}
 
