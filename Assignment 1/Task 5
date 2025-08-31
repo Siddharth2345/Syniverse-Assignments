@@ -1,1 +1,46 @@
+import java.util.*;
+
+public class CustomerService {
+
+    private Queue<String> queue = new LinkedList<>();
+
+    void addRequest(String request) {
+
+        queue.add(request);
+
+        System.out.println("Added Request: " + request + " | Time Complexity: O(1)");
+
+    }
+
+    void serveRequest() {
+
+        String req = queue.poll();
+
+        System.out.println("Served: " + req + " | Time Complexity: O(1)");
+
+    }
+
+    void displayRequests() {
+
+        System.out.println("Pending Requests: " + queue);
+
+        System.out.println("Display | Time Complexity: O(n)");
+
+    }
+
+    public static void main(String[] args) {
+
+        CustomerService cs = new CustomerService();
+
+        cs.addRequest("Ticket1");
+
+        cs.addRequest("Ticket2");
+
+        cs.displayRequests();
+
+        cs.serveRequest();
+
+    }
+
+}
 
