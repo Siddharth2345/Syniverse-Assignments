@@ -1,1 +1,26 @@
-
+public final class MathUtils {
+   private MathUtils() {
+       throw new AssertionError("Cannot instantiate MathUtils");
+   }
+   public static int square(int n) {
+       return n * n;
+   }
+   public static int factorial(int n) {
+       if (n <= 1) return 1;
+       return n * factorial(n - 1);
+   }
+   public static boolean isPrime(int n) {
+       if (n < 2) return false;
+       for (int i = 2; i <= Math.sqrt(n); i++) {
+           if (n % i == 0) return false;
+       }
+       return true;
+   }
+}
+public class MathUtilsTest {
+   public static void main(String[] args) {
+       System.out.println(MathUtils.square(5));
+       System.out.println(MathUtils.factorial(4));
+       System.out.println(MathUtils.isPrime(11));
+   }
+}
