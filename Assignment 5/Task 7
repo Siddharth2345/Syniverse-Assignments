@@ -1,0 +1,36 @@
+class StudentNotFoundException extends Exception {
+    public StudentNotFoundException(String message) {
+        super(message);
+    }
+}
+ 
+class InvalidIdException extends RuntimeException {
+    public InvalidIdException(String message) {
+        super(message);
+    }
+}
+ 
+class StudentManager {
+    private String[] students = {"Alice", "Bob"};
+ 
+    public String findStudentById(int id) throws StudentNotFoundException {
+        if (id < 0) throw new InvalidIdException("ID must be positive");
+        if (id >= students.length) throw new StudentNotFoundException("Student not found for ID: " + id);
+        return students[id];
+    }
+}
+ 
+public class StudentManagementTest {
+    public static void main(String[] args) {
+        StudentManager sm = new StudentManager();
+        try {
+            String student = sm.findStudentById(1); 
+            System.out.println("Found: " + student);
+            student = sm.findStudentById(5); 
+        } catch (StudentNotFoundException | InvalidIdException e) {
+            System.out.println("Exception: " + e.getMessage());
+        } finally {
+            System.out.println("Student search complete.");
+        }
+    }
+}
