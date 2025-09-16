@@ -1,0 +1,39 @@
+import java.util.PriorityQueue;
+ 
+class Task implements Comparable<Task> {
+    String description;
+    int priority; 
+ 
+    public Task(String description, int priority) {
+        this.description = description;
+        this.priority = priority;
+    }
+ 
+    @Override
+    public int compareTo(Task other) {
+        return Integer.compare(this.priority, other.priority); 
+    }
+}
+ 
+class TaskManager {
+    private PriorityQueue<Task> queue = new PriorityQueue<>();
+ 
+    public void addTask(Task task) {
+        queue.add(task);
+    }
+ 
+    public Task processNextTask() {
+        return queue.poll();
+    }
+
+    public static void main(String[] args) {
+        TaskManager manager = new TaskManager();
+        manager.addTask(new Task("Design UI", 3));
+        manager.addTask(new Task("Fix Bug", 1));
+        manager.addTask(new Task("Write Docs", 5));
+        manager.addTask(new Task("Code Review", 2));
+        manager.addTask(new Task("Deploy App", 4));
+        System.out.println(manager.processNextTask().description); 
+        System.out.println(manager.processNextTask().description); 
+    }
+}
