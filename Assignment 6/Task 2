@@ -1,0 +1,25 @@
+import java.util.TreeSet;
+ 
+class LibraryCatalog {
+    private TreeSet<String> books = new TreeSet<>();
+ 
+    public boolean addBook(String title) {
+        return books.add(title);
+    }
+ 
+    public void displaySortedBooks() {
+        for (String title : books) {
+            System.out.println(title);
+        }
+    }
+ 
+    public static void main(String[] args) {
+        LibraryCatalog catalog = new LibraryCatalog();
+        catalog.addBook("Java Programming");
+        catalog.addBook("Data Structures");
+        catalog.addBook("Algorithms");
+        catalog.addBook("Python Basics");
+        catalog.addBook("Web Development");
+        catalog.displaySortedBooks();
+    }
+}
