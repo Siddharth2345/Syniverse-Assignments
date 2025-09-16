@@ -1,0 +1,25 @@
+import java.util.HashMap;
+ 
+class StudentRegistration {
+    private HashMap<String, String> students = new HashMap<>();
+ 
+    public boolean addStudent(String id, String name) {
+        if (students.containsKey(id)) return false;
+        students.put(id, name);
+        return true;
+    }
+ 
+    public String findStudent(String id) {
+        return students.get(id);
+    }
+ 
+    public static void main(String[] args) {
+        StudentRegistration reg = new StudentRegistration();
+        reg.addStudent("S001", "Alice");
+        reg.addStudent("S002", "Bob");
+        reg.addStudent("S003", "Charlie");
+        reg.addStudent("S004", "Diana");
+        reg.addStudent("S005", "Ethan");
+        System.out.println(reg.findStudent("S003")); 
+    }
+}
