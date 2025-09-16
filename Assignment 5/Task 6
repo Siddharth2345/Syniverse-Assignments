@@ -1,0 +1,36 @@
+import java.io.*;
+ 
+class DataReader {
+    public String readData() throws IOException {
+        throw new IOException("Failed to read data");
+    }
+}
+ 
+class DataProcessor {
+    // Approach 1: Handle exception
+    public void processDataHandle() {
+        DataReader dr = new DataReader();
+        try {
+            dr.readData();
+        } catch (IOException e) {
+            System.out.println("Handled in DataProcessor: " + e.getMessage());
+        }
+    }
+    // Approach 2: Propagate exception
+    public void processDataPropagate() throws IOException {
+        DataReader dr = new DataReader();
+        dr.readData();
+    }
+}
+ 
+public class ExceptionPropagationTest {
+    public static void main(String[] args) {
+        DataProcessor dp = new DataProcessor();
+        dp.processDataHandle();
+        try {
+            dp.processDataPropagate(); 
+        } catch (IOException e) {
+            System.out.println("Propagated to main: " + e.getMessage());
+        }
+    }
+}
