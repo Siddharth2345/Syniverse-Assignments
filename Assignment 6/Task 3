@@ -1,0 +1,30 @@
+import java.util.ArrayList;
+ 
+class ShoppingCart {
+    private ArrayList<String> items = new ArrayList<>();
+ 
+    public void addItem(String item) {
+        items.add(item);
+    }
+ 
+    public String removeItem(int index) {
+        return items.remove(index);
+    }
+ 
+    public String getItem(int index) {
+        return items.get(index);
+    }
+ 
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem("Laptop");
+        cart.addItem("Mouse");
+        cart.addItem("Keyboard");
+        cart.addItem("Monitor");
+        cart.addItem("USB Cable");
+        cart.addItem("Headphones");
+        System.out.println(cart.getItem(2)); 
+        cart.removeItem(1);
+        System.out.println(cart.getItem(1));
+    }
+}
