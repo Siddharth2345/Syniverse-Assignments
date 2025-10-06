@@ -1,0 +1,52 @@
+import java.util.*;
+
+class DataLoader extends Thread {
+    public int[] data;
+    public void run() {
+        System.out.println("DataLoader started.");
+        data = new Random().ints(10, 1, 101).toArray();
+        try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
+        System.out.println("DataLoader completed. Data: " + Arrays.toString(data));
+    }
+}
+
+class DataProcessor extends Thread {
+    private DataLoader loader;
+    public int[] processed;
+    public DataProcessor(DataLoader loader) { this.loader = loader; }
+    public void run() {
+        try { loader.join(); } catch (InterruptedException ignored) {}
+        System.out.println("DataProcessor started.");
+        processed = Arrays.stream(loader.data).map(x -> x * 2).toArray();
+        try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+        System.out.println("DataProcessor completed. Processed: " + Arrays.toString(processed));
+    }
+}
+
+class DataSaver extends Thread {
+    private DataProcessor processor;
+    public int sum, avg;
+    public DataSaver(DataProcessor processor) { this.processor = processor; }
+    public void run() {
+        try { processor.join(); } catch (InterruptedException ignored) {}
+        System.out.println("DataSaver started.");
+        sum = Arrays.stream(processor.processed).sum();
+        avg = sum / processor.processed.length;
+        System.out.println("DataSaver completed. Sum: " + sum + ", Avg: " + avg);
+    }
+}
+
+public class ThreadPipelineDemo {
+    public static void main(String[] args) throws InterruptedException {
+        DataLoader loader = new DataLoader();
+        DataProcessor processor = new DataProcessor(loader);
+        DataSaver saver = new DataSaver(processor);
+
+        loader.start();
+        processor.start();
+        saver.start();
+
+        saver.join();
+        System.out.println("All threads complete. Final summary: Sum=" + saver.sum + ", Avg=" + saver.avg);
+    }
+}
