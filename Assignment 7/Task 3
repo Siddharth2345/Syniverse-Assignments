@@ -1,0 +1,41 @@
+import java.util.concurrent.*;
+import java.util.*;
+
+public class CallableSumCalculator {
+    public static void main(String[] args) {
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+        List<Callable<Integer>> tasks = new ArrayList<>();
+        tasks.add(() -> sumRange(1, 100));
+        tasks.add(() -> sumRange(101, 200));
+        tasks.add(() -> sumRange(201, 300));
+        tasks.add(() -> sumRange(301, 400));
+
+        List<Future<Integer>> futures = new ArrayList<>();
+        for (Callable<Integer> task : tasks) {
+            futures.add(pool.submit(task));
+        }
+
+        int factorial = 1;
+        for (int i = 1; i <= 10; i++) factorial *= i;
+        System.out.println("Factorial of 10: " + factorial);
+        System.out.println("Multiplication table of 5:");
+        for (int i = 1; i <= 10; i++) System.out.println("5 x " + i + " = " + (5 * i));
+
+        int grandTotal = factorial;
+        for (Future<Integer> f : futures) {
+            try {
+                grandTotal += f.get();
+            } catch (Exception e) {
+                System.out.println("Error in worker thread: " + e.getMessage());
+            }
+        }
+        pool.shutdown();
+        System.out.println("Grand total (sum of 4 ranges + factorial): " + grandTotal);
+    }
+
+    static int sumRange(int start, int end) {
+        int sum = 0;
+        for (int i = start; i <= end; i++) sum += i;
+        return sum;
+    }
+}
