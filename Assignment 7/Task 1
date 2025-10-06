@@ -1,0 +1,43 @@
+import java.util.concurrent.*;
+import java.util.*;
+
+public class ExecutorPerformance {
+    public static void simulateTaskProcessing() {
+        int numTasks = 8;
+        int minSleep = 500, maxSleep = 2000;
+
+        ExecutorService[] pools = {
+            Executors.newFixedThreadPool(4),
+            Executors.newCachedThreadPool(),
+            Executors.newSingleThreadExecutor()
+        };
+        String[] poolNames = {"FixedThreadPool", "CachedThreadPool", "SingleThreadExecutor"};
+
+        for (int i = 0; i < pools.length; i++) {
+            ExecutorService pool = pools[i];
+            long start = System.currentTimeMillis();
+            for (int j = 0; j < numTasks; j++) {
+                int sleepTime = minSleep + new Random().nextInt(maxSleep - minSleep + 1);
+                pool.submit(() -> {
+                    try { Thread.sleep(sleepTime); } catch (InterruptedException ignored) {}
+                });
+            }
+            pool.shutdown();
+            try {
+                if (!pool.awaitTermination(10, TimeUnit.SECONDS)) {
+                    System.out.println(poolNames[i] + " did not terminate in time.");
+                    pool.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Interrupted while waiting for " + poolNames[i]);
+                pool.shutdownNow();
+            }
+            long end = System.currentTimeMillis();
+            System.out.println(poolNames[i] + " execution time: " + (end - start) + " ms");
+        }
+    }
+
+    public static void main(String[] args) {
+        simulateTaskProcessing();
+    }
+}
