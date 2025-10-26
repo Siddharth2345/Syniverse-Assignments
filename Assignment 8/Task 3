@@ -1,0 +1,29 @@
+import java.util.concurrent.*;
+
+public class ParkingLotDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Semaphore parkingSpaces = new Semaphore(3);
+        ExecutorService executor = Executors.newFixedThreadPool(6);
+
+        for (int i = 1; i <= 6; i++) {
+            final int carId = i;
+            executor.submit(() -> {
+                try {
+                    System.out.println("Car " + carId + " arriving...");
+                    parkingSpaces.acquire();
+                    System.out.println("Car " + carId + " PARKED (spaces left: " + parkingSpaces.availablePermits() + ")");
+                    Thread.sleep(2000);
+                    System.out.println("Car " + carId + " leaving...");
+                    parkingSpaces.release();
+                    System.out.println("Car " + carId + " LEFT (spaces now: " + parkingSpaces.availablePermits() + ")");
+                } catch (InterruptedException e) {
+                    System.out.println("Car " + carId + " interrupted!");
+                }
+            });
+            Thread.sleep(300); // 300ms delay between arrivals
+        }
+
+        executor.shutdown();
+        executor.awaitTermination(10, TimeUnit.SECONDS);
+    }
+}
