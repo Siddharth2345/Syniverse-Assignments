@@ -1,0 +1,36 @@
+import java.util.concurrent.*;
+import java.time.LocalTime;
+
+public class AsyncTaskProcessor {
+    public static void processTasksAsync() {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        for (int i = 1; i <= 5; i++) {
+            final int taskId = i;
+            CompletableFuture.supplyAsync(() -> {
+                printStatus("Task " + taskId + " started");
+                int delay = 1000 + (int)(Math.random() * 2000); // 1-3 sec
+                try {
+                    if (taskId == 3) throw new RuntimeException("Simulated failure in Task 3");
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                return "Task " + taskId + " completed in " + delay + "ms";
+            }, executor)
+            .thenApply(result -> result + " [transformed]")
+            .exceptionally(ex -> "Task " + taskId + " failed: " + ex.getMessage())
+            .thenAccept(result -> printStatus(result));
+        }
+
+        printStatus("Main thread NOT blocked!");
+        executor.shutdown();
+    }
+
+    private static void printStatus(String msg) {
+        System.out.println(LocalTime.now() + " [" + Thread.currentThread().getName() + "] " + msg);
+    }
+
+    public static void main(String[] args) {
+        processTasksAsync();
+    }
+}
