@@ -1,0 +1,67 @@
+import java.util.*;
+import java.util.concurrent.locks.*;
+import java.util.concurrent.*;
+
+class DataSharing {
+    private final Queue<Integer> queue = new LinkedList<>();
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition notEmpty = lock.newCondition();
+
+    public void produce(int data) throws InterruptedException {
+        lock.lock();
+        try {
+            queue.add(data);
+            System.out.println("Producer produced: " + data);
+            notEmpty.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public Integer consume(long timeout, TimeUnit unit) throws InterruptedException {
+        lock.lock();
+        try {
+            while (queue.isEmpty()) {
+                if (!notEmpty.await(timeout, unit)) {
+                    System.out.println("Consumer timed out waiting for data.");
+                    return null;
+                }
+            }
+            Integer data = queue.poll();
+            System.out.println("Consumer consumed: " + data);
+            return data;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
+public class ProducerConsumerDemo {
+    public static void main(String[] args) {
+        DataSharing ds = new DataSharing();
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        executor.submit(() -> {
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    ds.produce(i);
+                    Thread.sleep(500);
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Producer interrupted");
+            }
+        });
+
+        executor.submit(() -> {
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    ds.consume(1, TimeUnit.SECONDS);
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Consumer interrupted");
+            }
+        });
+
+        executor.shutdown();
+    }
+}
